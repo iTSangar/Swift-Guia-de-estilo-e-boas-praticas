@@ -11,12 +11,12 @@ O inicio em IOS pode ser intimidador. Nem Swift, nem Objective-C são amplamente
 
 Se você está procurando algo específico, você pode ir direto para a seção relevante a partir daqui.
 
+1. [Estilo de código](#Estilo-de-código)
 1. [Começando](#Começando)
 1. [Bibliotecas comuns](#Bibliotecas-comuns)
 1. [Arquitetura](#Arquitetura)
 1. [Networking](#networking)
 1. [Assets](#assets)
-1. [Estilo de código](#Estilo-de-código)
 1. [Segurança](#Segurança)
 1. [Diagnosticos](#diagnosticos)
 1. [Analytics](#analytics)
@@ -24,6 +24,13 @@ Se você está procurando algo específico, você pode ir direto para a seção 
 1. [Deployment](#deployment)
 1. [In-App Purchases (IAP)](#in-app-purchases-iap)
 1. [Licença](#licença)
+
+## Estilo de Código
+
+Criamos um guia de estilo de código em um arquivo separado para uma melhor organização.
+
+[Acessar Guia de Estilo Swift](Style Guide.md)
+
 
 ## Começando
 
@@ -110,32 +117,6 @@ Encontre mais informações sobre localização [nesses slides de apresentação
 [stringsdict-format]: https://developer.apple.com/library/prerelease/ios/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html
 [language-plural-rules]: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
 [l10n-slides]: https://speakerdeck.com/hasseg/localization-practicum
-
-#### Constantes
-
-Costume-se a utilizar constantes somente onde for utilizar. Em Swift, você pode usar estruturas definidas em um arquivo `Constants.swift`, podendo assim armazenar e acessar as constantes de todo o app de forma limpa:
-
-```swift
-
-struct Config {
-    static let baseURL: NSURL(string: "http://www.example.org/")!
-    static let splineReticulatorName = "foobar"
-}
-
-struct Color {
-    static let primaryColor = UIColor(red: 0.22, green: 0.58, blue: 0.29, alpha: 1.0)
-    static let secondaryColor = UIColor.lightGrayColor()
-}
-
-```
-
-Em Objective-C, mantem constantes em todo o app em um arquivo `Constants.h`.
-
-    static CGFloat const XYZBrandingFontSizeSmall = 12.0f;
-    static NSString * const XYZAwesomenessDeliveredNotificationName = @"foo";
-
-Constantes reais são mais seguras, têm escopo explícito (não estão disponíveis em todos os arquivos importados), não podem ser redefinidas ou eliminadas em partes posteriores do código, e estão disponíveis no debugger.
-
 
 ### Branching Model
 
@@ -243,94 +224,6 @@ Catálogos de Assets (ativos) expõe apenas os nomes dos conjuntos de imagens, a
 Você pode incluir os originais [gráficos vetoriais (PDFs)] [vector-assets] produzidos por designers nos catálogos de assets, o Xcode gera automaticamente os bitmaps a partir daí. Isso reduz a complexidade de seu projeto (o número de arquivos a serem gerenciados.)
 
 [vector-assets]: http://martiancraft.com/blog/2014/09/vector-images-xcode6/
-
-## Estilo de Código
-
-### Nomeando
-
-A Apple presta muita atenção para manter nomeação consistente ao longo de suas APIs. Ao desenvolver para Cocoa, é muito mais fácil para novas pessoas participarem do projeto se você seguir [convenções de nomenclatura da Apple][cocoa-coding-guidelines].
-
-[cocoa-coding-guidelines]: https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html
-
-Aqui estão alguns tópicos básicos que você pode começar a usar imediatamente:
-
-Um método começando com um _verbo_ indica que ele executa alguma ação, mas não vai retornar nada:
-`- (void)loadView;`
-`- (void)startAnimating;`
-
-Qualquer método começando com um _substantivo_, retorna objeto e não pratica efeitos:
-`- (UINavigationItem *)navigationItem;`
-`+ (UILabel *)labelWithText:(NSString *)text;`
-
-Vale a pena saber a diferença e aplicar os dois separadamente, ou seja, não executar efeios quando você executa alguma ação, e vice-versa. Isso irá manter seus efeitos contidos em seções menores do código, o que torna mais compreensível e facilita a depuração.
-
-### Structure (Estrutura)
-
-`MARK:` comentários (Swift) e [marcas Pragma] [nshipster-pragma-marks] (Objective-C) são uma ótima maneira de agrupar seus métodos, especialmente em controladores de views. Aqui está um exemplo em Swift para uma estrutura comum que funciona com quase qualquer controlador de view:
-
-```swift
-
-import SomeExternalFramework
-
-class FooViewController : UIViewController, FoobarDelegate {
-
-    let foo: Foo
-
-    private let fooStringConstant = "FooConstant"
-    private let floatConstant = 1234.5
-
-    // MARK: Lifecycle
-
-    // Custom initializers go here
-
-    // MARK: View Lifecycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // …
-    }
-
-    // MARK: Layout
-
-    private func makeViewConstraints() {
-        // …
-    }
-
-    // MARK: User Interaction
-
-    func foobarButtonTapped() {
-        // …
-    }
-
-    // MARK: FoobarDelegate
-
-    func foobar(foobar: Foobar didSomethingWithFoo foo: Foo) {
-        // …
-    }
-
-    // MARK: Additional Helpers
-
-    private func displayNameForFoo(foo: Foo) {
-        // …
-    }
-
-}
-```
-
-O ponto mais importante é manter os comentários consistentes em todas as classes do seu projeto.
-
-[nshipster-pragma-marks]: http://nshipster.com/pragma/
-
-### Guia de estilo Externo
-
-Não existe diretrizes em nível de empresa para estilo de codificação. No entanto, pode ser útil para ler os guias de estilo por outras empresas de software.
-
-* GitHub: [Swift](https://github.com/github/swift-style-guide) and [Objective-C](https://github.com/github/objective-c-style-guide)
-* Ray Wenderlich: [Swift](https://github.com/raywenderlich/swift-style-guide) and [Objective-C](https://github.com/raywenderlich/objective-c-style-guide)
-* Google: [Objective-C](http://google-styleguide.googlecode.com/svn/trunk/objcguide.xml)
-* The New York Times: [Objective-C](https://github.com/NYTimes/objective-c-style-guide)
-* Sam Soffes: [Objective-C](https://gist.github.com/soffes/812796)
-* Luke Redpath: [Objective-C](http://lukeredpath.co.uk/blog/2011/06/28/my-objective-c-style-guide/)
 
 ## Segurança
 
