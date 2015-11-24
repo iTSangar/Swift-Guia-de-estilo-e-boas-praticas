@@ -84,6 +84,23 @@ class Counter {
 }
 ```
 
+A Apple presta muita atenção para manter uma nomeação consistente ao longo de suas APIs. Ao desenvolver com Cocoa, é muito mais fácil para novas pessoas participarem do projeto se você seguir as [convenções de nomenclatura da Apple][cocoa-coding-guidelines].
+
+[cocoa-coding-guidelines]: https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html
+
+Aqui estão alguns tópicos básicos que você pode começar a usar imediatamente:
+
+Um método começando com um _verbo_ indica que ele executa alguma ação, mas não vai retornar nada:
+`- (void)loadView;`
+`- (void)startAnimating;`
+
+Qualquer método começando com um _substantivo_, retorna um objeto e deve fazê-lo sem efeitos colaterais:
+`- (UINavigationItem *)navigationItem;`
+`+ (UILabel *)labelWithText:(NSString *)text;`
+
+Vale a pena saber a diferença e aplicar os dois separadamente. Isso irá manter seus efeitos colaterais em seções menores do código, o que torna mais compreensível e facilita a depuração.
+
+
 ### Enums
 
 Use UpperCamelCase para valores de enums:
@@ -141,6 +158,52 @@ Quando eles são necessários, use os comentário para explicar **por que** um d
 
 Evite comentários de bloco na mesma linha com o código, o código deve ser tão auto-documentado o possível. *Exceção: Isto não se aplica a essas observações utilizadas para gerar a documentação.*
 
+### Estrutura
+
+Comentários `MARK:` são uma ótima maneira de agrupar seus métodos, especialmente em controladores de views. Aqui está um exemplo para uma estrutura comum que funciona com quase qualquer controlador de view:
+
+```swift
+
+import SomeExternalFramework
+
+class FooViewController : UIViewController {
+
+    let foo: Foo
+
+    private let fooStringConstant = "FooConstant"
+    private let floatConstant = 1234.5
+
+    // MARK: Lifecycle
+
+    // Custom initializers go here
+
+    // MARK: View Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // …
+    }
+
+    // MARK: Layout
+
+    private func makeViewConstraints() {
+        // …
+    }
+
+    // MARK: User Interaction
+
+    func foobarButtonTapped() {
+        // …
+    }
+
+    // MARK: Additional Helpers
+
+    private func displayNameForFoo(foo: Foo) {
+        // …
+    }
+
+}
+```
 
 ## Classes e Structs
 
@@ -380,6 +443,26 @@ let widthString: NSString = width.stringValue        // NSString
 Constantes são definidas usando a palavra-chave `let`, e variáveis com a palavra-chave` var`. Sempre use `let` ao invés de` var` se o valor da variável não vai mudar.
 
 **Dica:** Uma boa técnica é definir tudo usando `let` e só alterar para` var` se o compilador reclamar!
+
+#### Recursos de Código
+
+Em Swift, você pode usar estruturas definidas em um arquivo chamado `Constants.swift`, podendo assim armazenar e acessar as constantes de todo o app de forma limpa:
+
+```swift
+
+struct Config {
+    static let baseURL: NSURL(string: "http://www.example.org/")!
+    static let splineReticulatorName = "foobar"
+}
+
+struct Color {
+    static let primaryColor = UIColor(red: 0.22, green: 0.58, blue: 0.29, alpha: 1.0)
+    static let secondaryColor = UIColor.lightGrayColor()
+}
+
+```
+
+Atualmente constantes são type-safe, têm escopo explícito (não estão disponíveis em todos os arquivos importados), não podem ser redefinidas ou eliminadas em partes posteriores do código, e estão disponíveis no debugger.
 
 
 ### Opcionais
