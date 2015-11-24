@@ -91,11 +91,15 @@ A Apple presta muita atenção para manter uma nomeação consistente ao longo d
 Aqui estão alguns tópicos básicos que você pode começar a usar imediatamente:
 
 Um método começando com um _verbo_ indica que ele executa alguma ação, mas não vai retornar nada:
+
 `- (void)loadView;`
+
 `- (void)startAnimating;`
 
 Qualquer método começando com um _substantivo_, retorna um objeto e deve fazê-lo sem efeitos colaterais:
+
 `- (UINavigationItem *)navigationItem;`
+
 `+ (UILabel *)labelWithText:(NSString *)text;`
 
 Vale a pena saber a diferença e aplicar os dois separadamente. Isso irá manter seus efeitos colaterais em seções menores do código, o que torna mais compreensível e facilita a depuração.
