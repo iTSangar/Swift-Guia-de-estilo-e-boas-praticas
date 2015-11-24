@@ -7,7 +7,7 @@ Boas ideias para desenvolvimento iOS - Swift
 O inicio em IOS pode ser intimidador. Nem Swift, nem Objective-C são amplamente utilizados em outros lugares, a plataforma possue seus próprios nomes e dispositivos. Essa documentação tem como objetivo ajudá-lo em seus primeiros passos ou introduzir o leitor de como fazer as coisas "da maneira certa". Todas as informações abaixo são apenas sugestões, então se você tiver uma razão para fazer diferente a siga.
 
 
-## Contents
+## Conteúdo
 
 Se você está procurando algo específico, você pode ir direto para a seção relevante a partir daqui.
 
@@ -120,7 +120,7 @@ Encontre mais informações sobre localização [nesses slides de apresentação
 
 ### Branching Model
 
-Especialmente quando a distribuição de um aplicativo para o público (por exemplo através da App Store), é uma boa idéia para isolar lançamentos em uma própria Brach. Além disso, recursos que envolve um monte de commit deve ser feito em sua própria brach. [`git-flow`] [gitflow-github] é uma ferramenta que ajuda você seguir estas convenções. É simplesmente um wrapper do projeto que possui marcações e comandos utilizando Git, pode ajudar a manter uma estrutura de ramificação adequada especialmente para as equipes. Fazer todo o desenvolvimento das Branches, e o controle de versão do app pode se dar através do comando
+Especialmente quando há uma distribuição de um aplicativo para o público (por exemplo através da App Store), é uma boa idéia utilizar branch para para isolar lançamentos. Além disso, recursos que envolve vários commits deve ser feito em sua própria brach. [`git-flow`] [gitflow-github] é uma ferramenta que ajuda você seguir estas convenções. É simplesmente um wrapper do projeto que possui marcações e comandos utilizando Git. Pode ajudar a manter uma estrutura de ramificação adequada especialmente para as equipes. Fazer o desenvolvimento em Branches, pode se dar através do comando
 
     git flow release finish <version>
 
@@ -130,12 +130,11 @@ Especialmente quando a distribuição de um aplicativo para o público (por exem
 ## Arquitetura
 
 * [Model-View-Controller-Store (MVCS)][mvcs]
-    * Esta é a arquitetura padrão da Apple (MVC), estende uma camada de loja que vende instâncias de modelo e lida com o trabalho em rede, armazenamento em cache etc.
-     * Cada loja expõe aos controladores de vista tanto `` RACSignal`s ou métodos retornando void` com blocos de conclusão personalizado.
+    * Esta é a arquitetura padrão da Apple (MVC), estende uma camada e lida com o trabalho em rede, armazenamento em cache etc.
 * [Model-View-ViewModel (MVVM)][mvvm]
-    *Motivado pela "enorme controladores da view (view controllers)": MVVM considera `UIViewController` uma subclasses responsável apenas pelo que será mostrado na View, mantendo todo o estado no ViewModel.
-    * Para saber mais sobre isso, veja [Introdução Fantástica ] de Bob Spryn [sprynthesis-mvvm].
-    * É uma arquitetura bastante exótico que pode valer a pena olhar em projetos maiores, porém MVVM é confusa e a capacidade de teste é uma grande preocupação.
+    * Motivado por "enorme controladores da view (view controllers)": MVVM considera `UIViewController` uma subclasses responsável apenas pelo que será mostrado na View, mantendo todo o estado no ViewModel.
+    * Para saber mais sobre isso, veja [Introdução Fantástica] [sprynthesis-mvvm] de Bob Spryn.
+    * É uma arquitetura bastante exótico que pode valer a pena olhar em projetos maiores, porém MVVM é confusa a implementação de teste é uma grande preocupação.
 
 [mvcs]: http://programmers.stackexchange.com/questions/184396/mvcs-model-view-controller-store
 [mvvm]: https://www.objc.io/issues/13-architecture/mvvm/
@@ -148,8 +147,8 @@ Estas são as maneiras de notificar os componentes sobre o acontecimentos em um 
 
 * __Delegation:__ _(one-to-one)_ Apple usa muito isso (alguns diriam, muito). Use quando quiser retornar uma informação.
 * __Callback blocks:__ _(one-to-one)_ Possui um baixo grau de acoplamento. 
-* __Notification Center:__ _(one-to-many)_ Possivelmente a maneira mais comum de emitir "eventos" para vários observadores. Baixo acoplamento - notificações pode ainda ser executadas em um nível global.
-* __Key-Value Observing (KVO):__ _(one-to-many)_ Não exige que o objeto observado emita eventos", enquanto ele é _Key Valor Coding (KVC) _ compatível para as chaves observadas (propriedades). Geralmente não é recomendado devido à sua natureza implícita e da API complicada.
+* __Notification Center:__ _(one-to-many)_ Possivelmente a maneira mais comum de emitir "eventos" para vários observadores. Baixo acoplamento - notificações podem ainda ser executadas em um nível global.
+* __Key-Value Observing (KVO):__ _(one-to-many)_ Não exige que o objeto observado emita eventos, enquanto ele é _Key Valor Coding (KVC)_ compatível para as chaves observadas (propriedades). Geralmente não é recomendado o seu uso devido à sua natureza implícita e da API complicada.
 * __Signals:__ _(one-to-many)_ eles permitem encadeamento e combina o conteúdo do seu núcleo, oferecendo, assim, uma forma de sair [callback hell][elm-escape-from-callback-hell].
 
 [elm-escape-from-callback-hell]: http://elm-lang.org/learn/escape-from-callback-hell
@@ -163,11 +162,11 @@ Mantem seus modelos imutável, é utilizado para traduzir semântica e tipos de 
 
 ### Views
 
-Devido ao  tamanhos das tela nos equipamentos da Apple e do advento da divisão de tela multitarefa no iPad, as fronteiras entre dispositivos e fatores de forma tornar-se cada vez mais ténue. Muito parecido com sites de hoje são esperados para se adaptar a diferentes tamanhos de janela do navegador, o aplicativo deve lidar com mudanças na tela imóveis disponíveis de uma forma graciosa. Isto pode acontecer, por exemplo, se o usuário gira o dispositivo em um aplicativo de iPad.
+Devido ao tamanhos das tela nos equipamentos da Apple e do advento da divisão de telas multitarefas no iPad, as fronteiras entre dispositivos e fatores de forma tornar-se cada vez mais ténue. Muito parecido com sites de hoje, os equipamentos são esperados para se adaptar a diferentes tamanhos de janela do navegador, o aplicativo deve lidar com mudanças na tela imóveis disponíveis de uma forma graciosa. Isto pode acontecer, por exemplo, se o usuário gira o dispositivo em um aplicativo de iPad.
 
-Em vez de manipular as Views diretamente, você deve usar as [classes de tamanho] [size-classes] e Auto layout para declarar restrições em suas Views. O sistema irá calcular os quadros apropriados com base nestas regras, e re-avaliar-los quando o ambiente muda.
+Em vez de manipular as Views diretamente, você deve usar as classes de tamanho e Auto layout para declarar restrições em suas Views. O sistema irá calcular os quadros apropriados com base nestas regras, e re-avaliar-los quando o ambiente muda.
 
-[Abordagem recomendada] [wwdc-autolayout-mysteries] da Apple para configurar as suas restrições de layout é criar e ativá-las uma vez durante a inicialização. Se você precisa mudar suas limitações de forma dinâmica, siga as referências a eles e, em seguida, desativar ou ativá-las, conforme necessário. O caso de uso principal para `` updateConstraints` de UIView` (ou seu homólogo UIViewController` `,` updateViewConstraints`) é quando você deseja que o sistema execute atualizações em lote para um melhor desempenho. No entanto, isso vem com o custo de ter que chamar `setNeedsUpdateConstraints` em outro lugar no seu código, aumentando sua complexidade.
+[Abordagem recomendada] [wwdc-autolayout-mysteries] da Apple para configurar as suas restrições de layout é criar e ativá-las uma vez durante a inicialização. Se você precisa mudar suas limitações de forma dinâmica, siga as referências a eles e, em seguida, desativar ou ativá-las, conforme necessário. O caso de uso principal para ` updateConstraints` de UIView` (ou seu homólogo UIViewController` ,` updateViewConstraints`) é quando você deseja que o sistema execute atualizações em lote para um melhor desempenho. No entanto, isso vem com o custo de ter que chamar `setNeedsUpdateConstraints` em outro lugar no seu código, aumentando sua complexidade.
 
 Se você substituir `updateConstraints` em uma exibição personalizada, você deve declarar explicitamente que a sua visão exige um layout baseado em restrição:
 
@@ -185,7 +184,7 @@ Objective-C:
 }
 ```
 
-Caso contrário, você pode encontrar bugs estranhos quando o sistema não chamar `updateConstraints ()`. [Este post] [edward-huynh-requiresconstraintbasedlayout] por Edward Huynh oferece uma explicação mais detalhada.
+Caso contrário, você pode encontrar bugs estranhos quando o sistema não chamar `updateConstraints ()`. [Este post] [edward-huynh-requiresconstraintbasedlayout] de Edward Huynh oferece uma explicação mais detalhada.
 
 [wwdc-autolayout-mysteries]: https://developer.apple.com/videos/wwdc/2015/?id=219
 [edward-huynh-requiresconstraintbasedlayout]: http://www.edwardhuynh.com/blog/2013/11/24/the-mystery-of-the-requiresconstraintbasedlayout/
@@ -204,7 +203,7 @@ Objective-C:
 FooViewController *fooViewController = [[FooViewController alloc] initWithViewModel:fooViewModel];
 ```
 
-Tente evitar o inchaço de seus controladores com lógica que possam residir com segurança em outros lugares. Soroush Khanlou tem um [bom artigo] [khanlou-destroy-massive-vc] de como conseguir isso, e arquiteturas como [MVVM] (#arquitetura) trata viewControlles como views, reduzindo significativamente a sua complexidade.
+Soroush Khanlou tem um [bom artigo] [khanlou-destroy-massive-vc] de como evitar o inchaço de seus controladores, e arquiteturas como [MVVM] (#arquitetura) trata viewControlles como views, reduzindo significativamente a sua complexidade.
 
 [khanlou-destroy-massive-vc]: http://khanlou.com/2014/09/8-patterns-to-help-you-destroy-massive-view-controller/
 
@@ -217,23 +216,23 @@ Tente evitar o inchaço de seus controladores com lógica que possam residir com
 
 ### Usando imagens bitmap
 
-Catálogos de Assets (ativos) expõe apenas os nomes dos conjuntos de imagens, abstraindo os nomes dos arquivos reais. Isso evita conflitos de nomes dos assets, tais como `button_large @ 2x.png` agora estão nomeados dentro de um conjunto de imagens. Os modificadores `-568h`,` @ 2x`, `~ iphone` e` ~ ipad` não são obrigatorios, por si só, mas tê-los no nome do arquivo ao arrastar o arquivo para um conjunto de imagens vai colocá-los automaticamente no diretório, evitando assim erros de atribuição que podem ser difíceis de encontrar.
+Catálogos de Assets expõe apenas os nomes dos conjuntos de imagens, abstraindo os nomes dos arquivos reais. Isso evita conflitos de nomes dos assets, tais como `button_large @ 2x.png`. Os modificadores `-568h`,` @ 2x`, `~ iphone` e` ~ ipad` não são obrigatorios, por si só, mas tê-los no nome do arquivo ao arrastar o arquivo para um conjunto de imagens vai colocá-los automaticamente no diretório, evitando assim erros de atribuição que podem ser difíceis de encontrar.
 
 ### Usando imagens vetoriais
 
-Você pode incluir os originais [gráficos vetoriais (PDFs)] [vector-assets] produzidos por designers nos catálogos de assets, o Xcode gera automaticamente os bitmaps a partir daí. Isso reduz a complexidade de seu projeto (o número de arquivos a serem gerenciados.)
+Você pode incluir os originais [gráficos vetoriais (PDFs)] [vector-assets] produzidos por designers nos catálogos de assets, o Xcode gera automaticamente os bitmaps a partir daí. Isso reduz a complexidade de seu projeto (e o número de arquivos a serem gerenciados.)
 
 [vector-assets]: http://martiancraft.com/blog/2014/09/vector-images-xcode6/
 
 ## Segurança
 
-Mesmo em uma era em que confiamos a nossos dispositivos portáteis nossos dados mais privados, a segurança continua a ser um assunto muitas vezes negligenciado em nossos apps. Tente encontrar um bom trade-off dada a natureza dos seus dados; seguindo apenas algumas regras simples. Um bom recurso para começar é da própria Apple [iOS Security Guide][apple-security-guide].
+Mesmo em uma era em que confiamos a nossos dispositivos portáteis nossos dados mais privados, a segurança continua a ser um assunto muitas vezes negligenciado em nossos apps. Tente encontrar um bom trade-off para a natureza dos seus dados; seguindo apenas algumas regras simples. Um bom recurso para começar é da própria Apple [iOS Security Guide][apple-security-guide].
 
 ### Armazenamento de dados
 
-Se o seu aplicativo precisa de armazenar dados confidenciais, como um nome de usuário, senha, um token de autenticação ou alguns detalhes pessoais do usuário, você precisa mantê-los em um local onde eles não podem ser acessados de fora do app. Nunca use `NSUserDefaults`, outros arquivos plist no disco ou Core Data para isso, como eles não são criptografados! Na maioria desses casos, o iOS Keychain é a melhor opção. Você pode usar uma biblioteca de wrapper como [SSKeychain] [sskeychain] ou [UICKeyChainStore] [uickeychainstore].
+Se o seu aplicativo precisa de armazenar dados confidenciais, como nome de usuário, senha, um token de autenticação ou alguns detalhes pessoais do usuário, você precisa mantê-los em um local onde eles não podem ser acessados de fora do app. Nunca use `NSUserDefaults`, arquivos plist ou Core Data para isso, já que não são criptografados! Na maioria desses casos, o iOS Keychain é a melhor opção. Você pode usar uma biblioteca de wrapper como [SSKeychain] [sskeychain] ou [UICKeyChainStore] [uickeychainstore].
 
-Ao armazenar arquivos e senhas, certifique-se de definir o nível de proteção, e escolhê-lo de forma conservadora. Se você precisa de acesso enquanto o dispositivo está bloqueado (por exemplo, para tarefas em segundo plano), use o "acessível após a primeira desbloqueio" de forma variável. Em outros casos, você provavelmente deve exigir que o dispositivo é desbloqueado para acessar os dados. Apenas manter dados confidenciais ao redor quando você precisar dele.
+Ao armazenar arquivos e senhas, certifique-se de definir o nível de proteção, e escolhê-lo de forma conservadora. Se você precisa de acesso enquanto o dispositivo está bloqueado (por exemplo, para tarefas em segundo plano), use o "acesso após a primeira desbloqueio" de forma variável. Em outros casos, você provavelmente deve exigir que o dispositivo é desbloqueado para acessar os dados.
 
 ### Networking
 
@@ -241,13 +240,13 @@ Mantenha todo o tráfego HTTP para servidores remotos criptografados com TLS em 
 
 ### Logging
 
-Tome cuidado extra para configurar níveis de registo adequada antes de liberar o seu aplicativo. Produtos construidos nunca devem obter senhas, tokens de API e afins de registro, pois isso pode facilmente causar vazamento. Por outro lado, registrando o fluxo de controle básico pode ajudá-lo a identificar problemas que os usuários estão enfrentando.
+Tome cuidado extra para configurar níveis de registo adequada antes de liberar o seu aplicativo. Produtos construidos nunca devem obter senhas, tokens de API e afins de registro, pois isso pode facilmente causar vazamento. Por outro lado, registrando o fluxo de controle pode ajudá-lo a identificar problemas que os usuários estão enfrentando.
 
 ### Insterface de Usuário
 
 Ao usar `UITextField` para senha, lembre-se de definir sua propriedade true em `secureTextEntry` para evitar mostrar a senha. Você também deve desativar auto-correção para o campo de senha e limpar o campo sempre que necessário, tal como quando seu app entra em background.
 
-Uma boa prática para é limpar a Área de trabalho para evitar que senhas e outros dados confidenciais vazem quando o app entre em background. Como iOS pode tirar screenshots do seu aplicativo, certifique-se de limpar os dados confidenciais da UI _antes_ do retorno em `applicationDidEnterBackground`.
+Uma boa prática é limpar a Área de trabalho para evitar que senhas e outros dados confidenciais vazem quando o app entre em background. Como iOS pode tirar screenshots do seu aplicativo, certifique-se de limpar os dados confidenciais da UI _antes_ do retorno em `applicationDidEnterBackground`.
 
 [apple-security-guide]: https://www.apple.com/business/docs/iOS_Security_Guide.pdf
 [sskeychain]: https://github.com/soffes/sskeychain
@@ -261,24 +260,24 @@ Uma boa prática para é limpar a Área de trabalho para evitar que senhas e out
 
 Quando seu aplicativo trava, o Xcode não mostra o debugger por padrão. Para conseguir isso, adicionamos um break pointer (clique no botão "+" na parte inferior do Xcode Debug Navigator) para parar a execução quando uma exceção é gerada. Em muitos casos, você então verá a linha de código responsável pela exceção. O Xcode também mantém quebra nas exceções em bibliotecas de terceiros, você pode ser capaz de diminuir isso escolhendo _Edit Breakpoint_ e definindo o _Exception_ suspensa para _Objective-C_.
 
-A view de depuração, [Revelar] [reveal] e a [Faísca Inspector] [spark-inspector] são dois poderosos inspetores visuais que podem salvar horas do seu tempo, especialmente se você estiver usando Auto Layout e querem localizar pontos de vista que estão com problemas ou fora das views.
+A view de depuração, [Reveal] [reveal] e a [Spark Inspector] [spark-inspector] são dois poderosos inspetores visuais que podem salvar horas do seu tempo, especialmente se você estiver usando Auto Layout e querem localizar pontos de vista que estão com problemas ou fora das views.
 
 [reveal]: http://revealapp.com/
 [spark-inspector]: http://sparkinspector.com
 
 ### Profiling
 
-Xcode vem com um conjunto de perfis chamado Instruments. Ele contém uma infinidade de ferramentas para uso de memória, CPU, rede de comunicações, gráficos e muito mais. É uma "fera", uma das ferramentas mais utilizadas são os rastreadores de vazamentos de memória. Basta escolher _Product_> _perfil_ no Xcode, selecione o instrumento Allocations, aperte o botão Record e filter mostrando assim o resumo dos objetos alocados, como o prefixo de nomes de classe do seu próprio app. A contagem na coluna persistente, em seguida, informa quantas instâncias de cada objeto que você tem. Qualquer classe para a qual a contagem de instância aumenta indiscriminadamente indica um aumento da memória.
+Xcode vem com um conjunto de perfis chamado Instruments. Ele contém uma infinidade de ferramentas para uso de memória, CPU, rede de comunicações, gráficos e muito mais. É uma "fera", uma das ferramentas mais utilizadas são os rastreadores de vazamentos de memória. Basta escolher _Product_> _perfil_ no Xcode, selecione o instrumento Allocations, aperte o botão Record e filter, mostrando assim o resumo dos objetos alocados, como o prefixo de nomes de classe do seu próprio app. A contagem na coluna persistente, em seguida, informa quantas instâncias de cada objeto que você tem. Qualquer classe para a qual a contagem de instância aumenta indiscriminadamente indica um aumento da memória.
 
-Também é bom saber que Instruments tem uma ferramenta de automação para gravar e reproduzir interações UI como arquivos JavaScript. [UI Auto Monkey][ui-auto-monkey] é um script que irá usar automação para bater aleatoriamente em seu aplicativo causando stress na aplicação muito utilizada em testes.
+Também é bom saber que Instruments tem uma ferramenta de automação para gravar e reproduzir interações UI como arquivos JavaScript. [UI Auto Monkey][ui-auto-monkey] é um script que irá usar automação para bater aleatoriamente em seu aplicativo causando stress na aplicação, muito utilizada em testes.
 
-Preste uma atenção extra quando for criar classes com um grande número de processamento. `NSDateFormatter`, por exemplo, é muito dispendioso para a aplicação fazê-lo em rápida execução.
+Preste atenção extra quando for criar classes com um grande número de processamento. `NSDateFormatter`, por exemplo, é muito dispendioso para a aplicação fazê-lo em rápida execução.
 
 [ui-auto-monkey]: https://github.com/jonathanpenn/ui-auto-monkey
 
 ## Analytics
 
-Incluindo alguns frameworks analytics em seu aplicativo é altamente recomendável, pois permite que você possa obter insights sobre como as pessoas realmente estão usando. Será que a função X agregar valor? Botão Y é muito difícil de encontrar? Para responder a estes, você pode enviar eventos, horários e outras informações mensuráveis a um serviço que agrega e visualiza-los - por exemplo, [Google Tag Manager] [google-tag-manager]. Este último é mais versátil do que o Google Analytics em que ele insere uma camada de dados entre aplicativos e Analytics, de modo que a lógica de dados pode ser modificada através de um serviço de web sem ter que atualizar o aplicativo.
+Incluir alguns frameworks analytics em seu aplicativo é altamente recomendável, pois permite que você possa obter insights sobre como as pessoas realmente estão usando. Será que a função X agrega valor? Botão Y é muito difícil de encontrar? Para responder a estes, você pode enviar eventos, horários e outras informações mensuráveis a um serviço que agrega e visualiza-los - por exemplo, [Google Tag Manager] [google-tag-manager]. Este último é mais versátil do que o Google Analytics em que ele insere uma camada de dados entre aplicativos e Analytics, de modo que a lógica de dados pode ser modificada através de um serviço de web sem ter que atualizar o aplicativo.
 
 [google-tag-manager]: https://www.google.com/analytics/tag-manager/
 
@@ -329,7 +328,7 @@ Sempre que você quiser executar o software em um dispositivo real (ao contrári
 
 Além de certificados, existem também __provisioning profiles__, que são, basicamente, o elo perdido entre dispositivos e certificados. Mais uma vez, existem dois tipos de distinguir entre fins de desenvolvimento e de distribuição:
 
-* __Development provisioning profile:__ Ele contém uma lista de todos os dispositivos que estão autorizados a instalar e executar o software. Ela está também relacionada com um ou mais certificados de desenvolvimento, uma para cada colaborador que está autorizada a utilizar o perfil. O perfil pode ser vinculado a um aplicativo específico ou usar um App ID (*) . O último é [desencorajador] [jared-sinclair-signing-tips], porque Xcode é notoriamente ruim em escolher os arquivos corretos para a assinatura, a menos que guiou na direção certa. Além disso, alguns recursos como Push Notifications ou Grupos App exigem uma App ID explícito.
+* __Development provisioning profile:__ Ele contém uma lista de todos os dispositivos que estão autorizados a instalar e executar o software. Ela está também relacionada com um ou mais certificados de desenvolvimento, uma para cada colaborador que está autorizada a utilizar o perfil. O perfil pode ser vinculado a um aplicativo específico ou usar um App ID (*). O último é [desencorajador] [jared-sinclair-signing-tips], porque Xcode é notoriamente ruim em escolher os arquivos corretos para a assinatura. Além disso, alguns recursos como Push Notifications ou Grupos App exigem uma App ID explícito.
 
 * __Distribution Perfil de aprovisionamento:__ Existem três formas diferentes de distribuição, cada uma para um caso de uso diferente. Cada perfil de distribuição está ligado a um certificado de distribuição, e não será válida quando o certificado expirar.
 
