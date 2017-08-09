@@ -102,7 +102,7 @@ Para manter todas aquelas centenas de arquivos no mesmo diretório, é uma boa i
     ├─ Stores
     ├─ Helpers
 
-Primeiro, crie-os como grupos (pequenoas "pastas" amarelas) dentro do grupo com o nome do seu projeto no Project Navigator do Xcode. Então, para cada um dos grupos, ligá-los a um diretório real no seu projeto. O mesmo serve para os seus subdiretórios.
+Primeiro, crie-os como grupos (pequenas "pastas" amarelas) dentro do grupo com o nome do seu projeto no Project Navigator do Xcode. Então, para cada um dos grupos, ligá-los a um diretório real no seu projeto. O mesmo serve para os seus subdiretórios.
 
 #### Localização (Traduções)
 
